@@ -2,9 +2,10 @@
 
 const express = require('express')
 const mongoose = require('mongoose')
+require('dotenv').config()
 const app = express()
 
-const Person = require('./models/Person')
+
 
 //forma de ler JSON / middlewares
 app.use(
@@ -32,15 +33,13 @@ app.get('/', (req, res) => {
 //mongodb+srv://ederjunior:YxKj4Ra9pvDQ7YS0@apicluster.681srif.mongodb.net/bancodaapi?retryWrites=true&w=majority
 
 //entregar um porta
-const DB_USER = 'ederjunior'
-const DB_PASSWORD = encodeURIComponent('YxKj4Ra9pvDQ7YS0')
 
-mongoose
-.connect(
-    'mongodb+srv://ederjunior:YxKj4Ra9pvDQ7YS0@apicluster.681srif.mongodb.net/?retryWrites=true&w=majority'
+const { PORT, DB_USER, DB_PASSWORD } = process.env
+
+mongoose.connect(
+  `mongodb+srv://${DB_USER}:${DB_PASSWORD}@apicluster.681srif.mongodb.net/?retryWrites=true&w=majority`
 )
-.then(() => {
-    console.log("Conectamos ao MongoDB")
-    app.listen(3000)
+
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado na porta ${PORT}`)
 })
-.catch((err) => console.log(err))
